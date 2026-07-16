@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Mind Health Solutions — Abhinjana R Ajay · Certified Psychologist" },
+      { title: "Mind Health Solutions" },
       {
         name: "description",
         content:
