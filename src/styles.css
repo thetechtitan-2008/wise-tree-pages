@@ -182,5 +182,4 @@
 }
 @utility animate-reveal {
   animation: reveal-up 0.9s ease-out both;
-  }
 }
