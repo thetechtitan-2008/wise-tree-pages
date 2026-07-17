@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import logoAsset from "@/assets/logo.png.asset.json";
 import heroTree from "@/assets/hero-tree.jpg";
 import aboutHands from "@/assets/about-hands.jpg";
@@ -22,6 +22,25 @@ export const Route = createFileRoute("/")({
 
 const INSTAGRAM_URL =
   "https://www.instagram.com/abhinjana.r.ajay?igsh=MWQ2bzlpN2QzdXo4cA%3D%3D&utm_source=qr";
+const INSTAGRAM_USERNAME = "abhinjana.r.ajay";
+
+function openInstagram(e: MouseEvent<HTMLAnchorElement>) {
+  if (typeof window === "undefined") return;
+  const ua = window.navigator.userAgent || "";
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+  if (!isMobile) return; // desktop → open web in new tab (default)
+  e.preventDefault();
+  const deepLink = `instagram://user?username=${INSTAGRAM_USERNAME}`;
+  const fallback = window.setTimeout(() => {
+    window.location.href = INSTAGRAM_URL;
+  }, 800);
+  const onHide = () => {
+    window.clearTimeout(fallback);
+    document.removeEventListener("visibilitychange", onHide);
+  };
+  document.addEventListener("visibilitychange", onHide);
+  window.location.href = deepLink;
+}
 
 const services = [
   {
@@ -549,6 +568,7 @@ function Index() {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noreferrer noopener"
+              onClick={openInstagram}
               className="reveal reveal-delay-3 lux-card group border border-gold/30 p-6 sm:p-8 hover:border-gold hover:bg-gold/5 flex items-start gap-4 sm:gap-5"
             >
               <div className="w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-full bg-gold-gradient flex items-center justify-center text-primary-foreground text-xl">◎</div>
