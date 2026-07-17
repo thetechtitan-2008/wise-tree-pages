@@ -568,6 +568,7 @@ function Index() {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noreferrer noopener"
+              onClick={openInstagram}
               className="reveal reveal-delay-3 lux-card group border border-gold/30 p-6 sm:p-8 hover:border-gold hover:bg-gold/5 flex items-start gap-4 sm:gap-5"
             >
               <div className="w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-full bg-gold-gradient flex items-center justify-center text-primary-foreground text-xl">◎</div>
