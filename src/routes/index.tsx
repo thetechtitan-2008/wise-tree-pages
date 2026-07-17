@@ -24,7 +24,7 @@ const INSTAGRAM_URL =
   "https://www.instagram.com/abhinjana.r.ajay?igsh=MWQ2bzlpN2QzdXo4cA%3D%3D&utm_source=qr";
 const INSTAGRAM_USERNAME = "abhinjana.r.ajay";
 
-function openInstagram(e: React.MouseEvent<HTMLAnchorElement>) {
+function openInstagram(e: MouseEvent<HTMLAnchorElement>) {
   if (typeof window === "undefined") return;
   const ua = window.navigator.userAgent || "";
   const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
