@@ -71,7 +71,7 @@
 
 :root {
   --radius: 0.5rem;
-  /* Luxury black & gold palette */
+  /* Luxury black & gold palette (DARK — default) */
   --background: oklch(0.14 0.008 60);
   --onyx: oklch(0.10 0.006 60);
   --foreground: oklch(0.94 0.02 85);
@@ -120,6 +120,37 @@
   --background: oklch(0.10 0.006 60);
 }
 
+/* ---------- Light mode: ivory & antique gold ---------- */
+.light {
+  --background: oklch(0.985 0.012 90);
+  --onyx: oklch(0.96 0.014 88);
+  --foreground: oklch(0.20 0.020 60);
+  --card: oklch(0.995 0.008 90);
+  --card-foreground: oklch(0.20 0.020 60);
+  --popover: oklch(0.985 0.012 90);
+  --popover-foreground: oklch(0.20 0.020 60);
+  --gold: oklch(0.58 0.14 68);
+  --gold-soft: oklch(0.68 0.13 74);
+  --gold-deep: oklch(0.44 0.12 60);
+  --primary: oklch(0.55 0.14 66);
+  --primary-foreground: oklch(0.99 0.01 90);
+  --secondary: oklch(0.94 0.014 86);
+  --secondary-foreground: oklch(0.20 0.020 60);
+  --muted: oklch(0.93 0.012 86);
+  --muted-foreground: oklch(0.42 0.030 68);
+  --accent: oklch(0.90 0.030 82);
+  --accent-foreground: oklch(0.20 0.020 60);
+  --border: oklch(0.55 0.10 70 / 28%);
+  --input: oklch(0.90 0.020 82);
+  --ring: oklch(0.58 0.14 68);
+
+  --gradient-gold: linear-gradient(135deg, oklch(0.52 0.14 62) 0%, oklch(0.72 0.13 78) 50%, oklch(0.56 0.14 66) 100%);
+  --gradient-gold-text: linear-gradient(180deg, oklch(0.62 0.14 72) 0%, oklch(0.48 0.14 62) 60%, oklch(0.38 0.11 58) 100%);
+  --gradient-onyx: radial-gradient(ellipse at top, oklch(0.99 0.010 92) 0%, oklch(0.965 0.014 88) 55%, oklch(0.94 0.018 86) 100%);
+  --shadow-gold: 0 20px 60px -22px oklch(0.55 0.14 66 / 30%), 0 0 60px -30px oklch(0.72 0.13 78 / 25%);
+  --shadow-elegant: 0 30px 80px -30px oklch(0.30 0.05 70 / 22%);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -161,8 +192,8 @@
 }
 
 @keyframes shimmer {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
 }
 
 @keyframes float-slow {
@@ -176,7 +207,7 @@
 }
 
 @utility animate-shimmer {
-  animation: shimmer 4s ease-in-out infinite;
+  animation: shimmer 6s ease-in-out infinite;
 }
 @utility animate-float-slow {
   animation: float-slow 6s ease-in-out infinite;
@@ -228,13 +259,14 @@ html {
 .reveal-delay-4 { transition-delay: 0.48s; }
 .reveal-delay-5 { transition-delay: 0.60s; }
 
-/* Parallax gentle drift on hero backdrop */
+/* Parallax gentle drift on hero backdrop — kept lightweight (transform only) */
 @keyframes drift {
-  0%, 100% { transform: scale(1.05) translateY(0); }
-  50%      { transform: scale(1.08) translateY(-1.5%); }
+  0%, 100% { transform: scale(1.05) translate3d(0,0,0); }
+  50%      { transform: scale(1.07) translate3d(0,-1%,0); }
 }
 @utility animate-drift {
-  animation: drift 22s ease-in-out infinite;
+  animation: drift 26s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* Gold sheen sweep for headlines */
