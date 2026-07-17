@@ -22,6 +22,25 @@ export const Route = createFileRoute("/")({
 
 const INSTAGRAM_URL =
   "https://www.instagram.com/abhinjana.r.ajay?igsh=MWQ2bzlpN2QzdXo4cA%3D%3D&utm_source=qr";
+const INSTAGRAM_USERNAME = "abhinjana.r.ajay";
+
+function openInstagram(e: React.MouseEvent<HTMLAnchorElement>) {
+  if (typeof window === "undefined") return;
+  const ua = window.navigator.userAgent || "";
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+  if (!isMobile) return; // desktop → open web in new tab (default)
+  e.preventDefault();
+  const deepLink = `instagram://user?username=${INSTAGRAM_USERNAME}`;
+  const fallback = window.setTimeout(() => {
+    window.location.href = INSTAGRAM_URL;
+  }, 800);
+  const onHide = () => {
+    window.clearTimeout(fallback);
+    document.removeEventListener("visibilitychange", onHide);
+  };
+  document.addEventListener("visibilitychange", onHide);
+  window.location.href = deepLink;
+}
 
 const services = [
   {
