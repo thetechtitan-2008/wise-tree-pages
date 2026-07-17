@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import logoAsset from "@/assets/logo.png.asset.json";
 import heroTree from "@/assets/hero-tree.jpg";
 import aboutHands from "@/assets/about-hands.jpg";
