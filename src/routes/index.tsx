@@ -147,7 +147,7 @@ function Ornament({ className = "" }: { className?: string }) {
 function IntroOverlay() {
   const [gone, setGone] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setGone(true), 2900);
+    const t = setTimeout(() => setGone(true), 1900);
     return () => clearTimeout(t);
   }, []);
   if (gone) return null;
@@ -172,6 +172,24 @@ function Index() {
   useScrollProgress();
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    const stored = (typeof window !== "undefined" && localStorage.getItem("mhs-theme")) as
+      | "dark"
+      | "light"
+      | null;
+    if (stored) setTheme(stored);
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+    localStorage.setItem("mhs-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
     <div className="min-h-screen text-foreground overflow-x-hidden">
@@ -179,7 +197,7 @@ function Index() {
       <div id="scroll-progress" className="scroll-progress" />
 
       {/* NAV */}
-      <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-onyx/70 border-b border-border/40">
+      <header className="fixed top-0 inset-x-0 z-50 bg-background/90 border-b border-border/40">
         <nav className="max-w-7xl mx-auto grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 sm:px-6 py-3.5 sm:py-4">
           <a href="#home" className="flex min-w-0 items-center gap-3">
             <img src={logoAsset.url} alt="Mind Health Solutions" className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 object-contain" />
@@ -199,27 +217,46 @@ function Index() {
             <a href="#contact" className="nav-link hover:text-gold-soft transition-colors">Contact</a>
           </div>
 
-          <a
-            href="#contact"
-            className="hidden md:inline-flex items-center px-5 py-2.5 rounded-sm border border-gold/60 text-gold text-[10px] tracking-[0.28em] uppercase hover:bg-gold-gradient hover:text-primary-foreground transition-all duration-500"
-          >
-            Book Session
-          </a>
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="h-9 w-9 flex items-center justify-center rounded-full border border-gold/40 text-gold hover:bg-gold/10 transition-colors"
+              title={theme === "dark" ? "Switch to light" : "Switch to dark"}
+            >
+              <span aria-hidden className="text-sm">{theme === "dark" ? "☀" : "☾"}</span>
+            </button>
+            <a
+              href="#contact"
+              className="inline-flex items-center px-5 py-2.5 rounded-sm border border-gold/60 text-gold text-[10px] tracking-[0.28em] uppercase hover:bg-gold-gradient hover:text-primary-foreground transition-all duration-500"
+            >
+              Book Session
+            </a>
+          </div>
 
-          <button
-            aria-label="Open menu"
-            onClick={() => setMenuOpen((v) => !v)}
-            className="md:hidden flex flex-col justify-center items-end gap-1.5 h-9 w-9 text-gold"
-          >
-            <span className={`h-px w-6 bg-gold transition-transform ${menuOpen ? "translate-y-[6px] rotate-45" : ""}`} />
-            <span className={`h-px w-4 bg-gold transition-opacity ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`h-px w-6 bg-gold transition-transform ${menuOpen ? "-translate-y-[6px] -rotate-45" : ""}`} />
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="h-9 w-9 flex items-center justify-center rounded-full border border-gold/40 text-gold"
+            >
+              <span aria-hidden className="text-sm">{theme === "dark" ? "☀" : "☾"}</span>
+            </button>
+            <button
+              aria-label="Open menu"
+              onClick={() => setMenuOpen((v) => !v)}
+              className="flex flex-col justify-center items-end gap-1.5 h-9 w-9 text-gold"
+            >
+              <span className={`h-px w-6 bg-gold transition-transform ${menuOpen ? "translate-y-[6px] rotate-45" : ""}`} />
+              <span className={`h-px w-4 bg-gold transition-opacity ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`h-px w-6 bg-gold transition-transform ${menuOpen ? "-translate-y-[6px] -rotate-45" : ""}`} />
+            </button>
+          </div>
         </nav>
 
         {/* Mobile menu */}
         <div
-          className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-500 ${menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"} border-t border-gold/20 bg-onyx/95 backdrop-blur-xl`}
+          className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-500 ${menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"} border-t border-gold/20 bg-background/95`}
         >
           <div className="flex flex-col px-6 py-6 gap-5 text-sm tracking-[0.25em] uppercase text-muted-foreground">
             {[
@@ -252,11 +289,12 @@ function Index() {
             alt="Ancient golden tree providing shelter — a metaphor for healing and protection"
             width={1600}
             height={1200}
-            className="w-full h-full object-cover opacity-55 animate-drift"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover opacity-55"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-onyx/70 via-onyx/55 to-onyx" />
-          <div className="absolute inset-0 bg-gradient-to-r from-onyx via-onyx/40 to-transparent" />
-          <div className="absolute -inset-20 bg-gold/5 blur-[120px] animate-shimmer opacity-70 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/75 via-background/55 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 grid md:grid-cols-12 gap-10 items-center w-full">
@@ -299,7 +337,7 @@ function Index() {
 
           <div className="md:col-span-5 hidden md:flex justify-center animate-float-slow">
             <div className="relative reveal reveal-scale">
-              <div className="absolute -inset-8 rounded-full bg-gold/10 blur-3xl animate-shimmer" />
+              <div className="absolute -inset-6 rounded-full bg-gold/10 opacity-70" />
               <img
                 src={logoAsset.url}
                 alt="Mind Health Solutions crest"
@@ -389,7 +427,7 @@ function Index() {
       {/* PHILOSOPHY */}
       <section id="philosophy" className="relative py-24 sm:py-32 px-5 sm:px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={roots} alt="" width={1600} height={900} loading="lazy" className="w-full h-full object-cover opacity-25 animate-drift" />
+          <img src={roots} alt="" width={1600} height={900} loading="lazy" decoding="async" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto text-center">
